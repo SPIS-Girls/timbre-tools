@@ -129,7 +129,7 @@ bool SpisGirlsAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts
 }
 #endif
 
-void SpisGirlsAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void SpisGirlsAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& )
 {
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
