@@ -102,13 +102,12 @@ void SpisGirlsAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     if (cameraList.size() > 0) {
         std::cout << cameraList.strings.getFirst();
         camera = juce::CameraDevice::openDevice(0);
+        camera->takeStillPicture(procImage);
     }
     else {
         // throw big error
         // and quit everything
     }
-
-    camera->takeStillPicture(procImage);
 
     //aaa
     audioFft.initialize(sampleRate, 512);

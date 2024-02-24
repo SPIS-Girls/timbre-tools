@@ -162,19 +162,20 @@ public:
         avgSlinkiness /= pixelCount;
         avgCrunchiness /= (width-2)*(height-2);
         avgBrightness /= pixelCount;
-        auto message1 = juce::MidiMessage::controllerEvent(0, 1, avgBleededRedness);
-        auto message2 = juce::MidiMessage::controllerEvent(1, 1, avgBleededGreeness);
-        auto message3 = juce::MidiMessage::controllerEvent(2, 1, avgBleededBlueness);
-        auto message4 = juce::MidiMessage::controllerEvent(3, 1, avgSlinkiness);
-        auto message5 = juce::MidiMessage::controllerEvent(4, 1, avgCrunchiness);
-        auto message6 = juce::MidiMessage::controllerEvent(5, 1, avgBrightness);
+        ourImage = std::make_shared<juce::Image>(_image);
+
+        auto message1 = juce::MidiMessage::noteOn(1, 1, avgBleededRedness);
+        auto message2 = juce::MidiMessage::noteOn(1, 2, avgBleededGreeness);
+        auto message3 = juce::MidiMessage::noteOn(1, 3, avgBleededBlueness);
+        auto message4 = juce::MidiMessage::noteOn(1, 4, avgSlinkiness);
+        auto message5 = juce::MidiMessage::noteOn(1, 5, avgCrunchiness);
+        auto message6 = juce::MidiMessage::noteOn(1, 6, avgBrightness);
         midiList.add(message1);
         midiList.add(message2);
         midiList.add(message3);
         midiList.add(message4);
         midiList.add(message5);
         midiList.add(message6);
-        ourImage = std::make_shared<juce::Image>(_image);
     };
 
 private:
