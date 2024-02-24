@@ -51,24 +51,24 @@ void AudioFft::performFFT()
 {
     forwardFFT.performRealOnlyForwardTransform(fftData.data());
     bool found = false;
-    for (int i = 0; i < windowSize; i++)
-    {
-        auto real = fftData[i*2];
-        auto imag = fftData[i*2+1];
-        if (i > 0 && real > 6 && !found)
-        {
-            int k = i * 2;
-            int mult = 1;
-            found = true;
-            while (k < windowSize)
-            {
-                fftData.set(k*2, real * 4);
-                fftData.set(k*2 + 1, imag * 4);
-                k = i * mult;
-                mult++;
-            }
-        }
-    }
+      for (int i = 0; i < windowSize; i++)
+      {
+          auto real = fftData[i*2];
+          auto imag = fftData[i*2+1];
+          if (i > 0 && real > 6 && !found)
+          {
+              int k = i * 2;
+              int mult = 1;
+              found = true;
+              while (k < windowSize)
+              {
+                  fftData.set(k*2, real * 4);
+                  fftData.set(k*2 + 1, imag * 4);
+                  k = i * mult;
+                  mult++;
+              }
+          }
+      }
     
     forwardFFT.performRealOnlyInverseTransform(fftData.data());
 }
