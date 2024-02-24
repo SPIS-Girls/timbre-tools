@@ -5,6 +5,8 @@
               pluginCharacteristicsValue="pluginProducesMidiOut">
   <MAINGROUP id="cgzhwk" name="SpisGirls">
     <GROUP id="{EBC5BC9F-B5BA-B3C3-F923-90D906CB44ED}" name="Source">
+      <FILE id="Oli95F" name="ImageFfft.cpp" compile="1" resource="0" file="Source/ImageFfft.cpp"/>
+      <FILE id="FCzkNg" name="ImageFfft.h" compile="0" resource="0" file="Source/ImageFfft.h"/>
       <FILE id="YD7pyw" name="AudioFft.cpp" compile="1" resource="0" file="Source/AudioFft.cpp"/>
       <FILE id="WHuTBO" name="AudioFft.h" compile="0" resource="0" file="Source/AudioFft.h"/>
       <FILE id="It3q4b" name="PluginProcessor.cpp" compile="1" resource="0"
@@ -15,6 +17,7 @@
             file="Source/PluginEditor.cpp"/>
       <FILE id="BvF0kK" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
+    <FILE id="oC91ds" name="dj_fft.h" compile="0" resource="0" file="../dj_fft/dj_fft.h"/>
   </MAINGROUP>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

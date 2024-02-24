@@ -57,6 +57,8 @@ public:
     // our stuff
     std::shared_ptr<juce::Image> ourImage;
     juce::CameraDevice* camera;
+    std::vector<std::complex<float>> imageForFFT;
+
 
     std::function<void(const juce::Image&)> procImage = [this](const juce::Image& _image)
     {
@@ -164,11 +166,22 @@ public:
         avgBrightness /= pixelCount;
 
         ourImage = std::make_shared<juce::Image>(_image);
+
+        float N = 256.f;
+        imageForFFT.resize((int)N* N);
+        float di = (float)width / N;
+        float dj = (float)height / N;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                imageForFFT[i * N + j] = myBitmap[di * (float)i][dj * (float)j].br;
+            }
+        }
     };
 
 private:
     AudioFft audioFft;
     double samplerate;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SpisGirlsAudioProcessor)
 };
