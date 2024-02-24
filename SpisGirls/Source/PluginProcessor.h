@@ -168,6 +168,7 @@ public:
 
 private:
     AudioFft audioFft;
+    double samplerate;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SpisGirlsAudioProcessor)
 };
