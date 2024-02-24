@@ -436,3 +436,8 @@ xcuserdata/
 ## Xcode 8 and earlier
 *.xcscmblueprint
 *.xccheckout
+
+.ipynb_checkpoints
+*/.vscode
+*/.idea
+*/.pytest_cache
