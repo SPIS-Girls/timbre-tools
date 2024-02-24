@@ -102,7 +102,6 @@ void SpisGirlsAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     if (cameraList.size() > 0) {
         std::cout << cameraList.strings.getFirst();
         camera = juce::CameraDevice::openDevice(0);
-        camera->takeStillPicture(procImage);
     }
     else {
         // throw big error
@@ -185,6 +184,13 @@ void SpisGirlsAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
             audioFft.processSample(audioIn[i], channelData, i, buffer.getNumSamples());
         }
     }
+
+    if (imageCaptureTrigger <= samplesProcessedCount) {
+        camera->takeStillPicture(procImage);
+        imageCaptureTrigger += samplerate;
+    }
+
+    samplesProcessedCount += buffer.getNumSamples();
 }
 
 //==============================================================================

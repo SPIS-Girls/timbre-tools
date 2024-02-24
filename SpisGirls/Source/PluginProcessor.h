@@ -57,6 +57,8 @@ public:
     // our stuff
     std::shared_ptr<juce::Image> ourImage;
     juce::CameraDevice* camera;
+    uint32_t samplesProcessedCount = 0;
+    uint32_t imageCaptureTrigger = 0;
 
     std::function<void(const juce::Image&)> procImage = [this](const juce::Image& _image)
     {
@@ -170,6 +172,7 @@ public:
         auto message4 = juce::MidiMessage::noteOn(1, 4, avgSlinkiness);
         auto message5 = juce::MidiMessage::noteOn(1, 5, avgCrunchiness);
         auto message6 = juce::MidiMessage::noteOn(1, 6, avgBrightness);
+        midiList.clearQuick();
         midiList.add(message1);
         midiList.add(message2);
         midiList.add(message3);
