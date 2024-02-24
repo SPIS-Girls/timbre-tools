@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "AudioFft.h"
 
 //==============================================================================
 /**
@@ -166,6 +167,7 @@ public:
     };
 
 private:
+    AudioFft audioFft;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SpisGirlsAudioProcessor)
 };

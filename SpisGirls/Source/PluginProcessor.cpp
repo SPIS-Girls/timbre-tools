@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "AudioFft.h"
 
 //==============================================================================
 SpisGirlsAudioProcessor::SpisGirlsAudioProcessor()
@@ -109,6 +110,7 @@ void SpisGirlsAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     camera->takeStillPicture(procImage);
 
     //aaa
+    audioFft.initialize(sampleRate, 512);
 }
 
 void SpisGirlsAudioProcessor::releaseResources()
@@ -168,8 +170,12 @@ void SpisGirlsAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
+        auto* audioIn = buffer.getReadPointer(channel);
+        
+        for (auto i = 0; i < buffer.getNumSamples(); i++)
+        {
+            audioFft.processSample(audioIn[i], channelData, i, buffer.getNumSamples());
+        }
     }
 }
 
