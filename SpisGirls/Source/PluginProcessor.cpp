@@ -95,6 +95,20 @@ void SpisGirlsAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    juce::StringArray cameraList = juce::CameraDevice::getAvailableDevices();
+
+    if (cameraList.size() > 0) {
+        std::cout << cameraList.strings.getFirst();
+        camera = juce::CameraDevice::openDevice(0);
+    }
+    else {
+        // throw big error
+        // and quit everything
+    }
+
+    camera->takeStillPicture(procImage);
+
+    //aaa
 }
 
 void SpisGirlsAudioProcessor::releaseResources()
