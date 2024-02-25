@@ -79,8 +79,9 @@ public:
         float saturationExpansion = 20;
 
         // image metadata
-        int width = _image.getWidth();
-        int height = _image.getHeight();
+        juce::Image image = _image.rescaled(320, 240);
+        int width = image.getWidth();
+        int height = image.getHeight();
         float pixelCount = (float)width*height;
 
         // work bitmap and others
@@ -107,7 +108,7 @@ public:
         // replicating to a manageable bitmap
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                juce::Colour pixel = _image.getPixelAt(i, j);
+                juce::Colour pixel = image.getPixelAt(i, j);
                 myBitmap[i][j].r = pixel.getFloatRed();
                 myBitmap[i][j].g = pixel.getFloatGreen();
                 myBitmap[i][j].b = pixel.getFloatBlue();
@@ -168,7 +169,7 @@ public:
         avgSlinkiness /= pixelCount;
         avgCrunchiness /= (width-2)*(height-2);
         avgBrightness /= pixelCount;
-        ourImage = std::make_shared<juce::Image>(_image);
+        ourImage = std::make_shared<juce::Image>(image);
 
         auto message1 = juce::MidiMessage::noteOn(1, 1, avgBleededRedness);
         auto message2 = juce::MidiMessage::noteOn(1, 2, avgBleededGreeness);
