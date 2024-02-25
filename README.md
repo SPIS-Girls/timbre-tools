@@ -17,7 +17,7 @@ Video feature extraction and FFT calculations are computed in a real-time JUCE p
 
 
 
-### Meet The Team
+## Meet The Team
 We are a team of 5 from Sound and Music Computing, Aalborg University:
 | Cumhur | Giacomo | Kate | Levin | Maria |
 | -------- | ------- | ------- | ------- | ------- |
