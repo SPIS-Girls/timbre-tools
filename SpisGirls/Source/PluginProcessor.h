@@ -9,7 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "AudioFft.h"
+#include "AudioImageMagic.h"
+#include "../../dj_fft/dj_fft.h"
 
 //==============================================================================
 /**
@@ -57,6 +58,9 @@ public:
     // our stuff
     std::shared_ptr<juce::Image> ourImage;
     juce::CameraDevice* camera;
+    std::vector<std::complex<float>> imageForFFT;
+    std::vector<std::complex<float>> imageFftData;
+    const int N = 256;
     uint32_t samplesProcessedCount = 0;
     uint32_t imageCaptureTrigger = 0;
 
@@ -179,10 +183,24 @@ public:
         midiList.add(message4);
         midiList.add(message5);
         midiList.add(message6);
+
+        // Preoare structure for FFT2
+        imageForFFT.resize(N* N);
+        float di = (float)width / N;
+        float dj = (float)height / N;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                imageForFFT[i * N + j] = myBitmap[di * (float)i][dj * (float)j].br;
+            }
+        }
+
+        // Run FFT2
+        imageFftData = dj::fft2d(imageForFFT, dj::fft_dir::DIR_FWD);
+
     };
 
 private:
-    AudioFft audioFft;
+    AudioImageMagic audioImageMagic{N};
     double samplerate;
     void addMessageToList (const juce::MidiMessage& message);
     juce::Array<juce::MidiMessage> midiList;
