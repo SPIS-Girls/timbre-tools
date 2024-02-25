@@ -100,7 +100,8 @@ void SpisGirlsAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
 
     if (cameraList.size() > 0) {
         std::cout << cameraList.strings.getFirst();
-        camera = juce::CameraDevice::openDevice(0);
+        camera = std::unique_ptr<juce::CameraDevice>(juce::CameraDevice::openDevice(0));
+
     }
     else {
         // throw big error
