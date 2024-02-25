@@ -15,7 +15,7 @@
 //==============================================================================
 /**
 */
-class SpisGirlsAudioProcessor  : public juce::AudioProcessor
+class SpisGirlsAudioProcessor  : public juce::AudioProcessor, juce::Timer
 {
 public:
     //==============================================================================
@@ -61,8 +61,6 @@ public:
     std::vector<std::complex<float>> imageForFFT;
     std::vector<std::complex<float>> imageFftData;
     const int N = 256;
-    uint32_t samplesProcessedCount = 0;
-    uint32_t imageCaptureTrigger = 0;
 
     std::function<void(const juce::Image&)> procImage = [this](const juce::Image& _image)
     {
@@ -199,7 +197,9 @@ public:
         imageFftData = dj::fft2d(imageForFFT, dj::fft_dir::DIR_FWD);
 
     };
-
+    
+    void timerCallback() override;
+    
 private:
     AudioImageMagic audioImageMagic{N};
     double samplerate;
