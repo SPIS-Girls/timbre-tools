@@ -153,7 +153,7 @@ void SpisGirlsAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     for (int i = 0; i < midiList.size(); i++)
     {
         auto message = midiList[i];
-        auto timestamp = message.getTimeStamp();
+        auto timestamp = midiList[0].getTimeStamp();
         auto sampleNumber =  (int) (timestamp * samplerate);
         midiBuffer.addEvent (message, sampleNumber);
     }
