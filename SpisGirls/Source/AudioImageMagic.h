@@ -16,9 +16,11 @@
 class AudioImageMagic
 {
 public:
-    AudioImageMagic(int N, std::vector<std::complex<float>>* imageFft);
+    AudioImageMagic(int N);
     void initialize(float samplerate, int fftSize);
     void processSample(float sample, float * writeBuffer, int pos, int numSamples);
+
+    std::vector<std::complex<float>> imageFft;
 private:
     int windowSize;
     int fftSize;
@@ -29,7 +31,6 @@ private:
     juce::dsp::FFT forwardFFT;
 
     //Image logic
-    std::vector<std::complex<float>>* imageFft;
     std::vector<std::complex<float>> audioFft;
     std::vector<std::complex<float>> timeDomain2D;
     std::vector<std::complex<float>> convoFft;

@@ -22,7 +22,7 @@ SpisGirlsAudioProcessor::SpisGirlsAudioProcessor()
                        )
 #endif
 {
-    imageForFFT.resize(N * N);
+
 }
 
 SpisGirlsAudioProcessor::~SpisGirlsAudioProcessor()

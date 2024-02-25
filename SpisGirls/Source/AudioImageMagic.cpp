@@ -10,12 +10,28 @@
 
 #include "AudioImageMagic.h"
 
-AudioImageMagic::AudioImageMagic(int N, std::vector<std::complex<float>>* imageFft)
-    : N(N), hann(N, juce::dsp::WindowingFunction<float>::WindowingMethod::hann), forwardFFT(N), imageFft(imageFft)
+#define XYtoI(x,y,X) (X*x+y)
+
+void elementWiseMultiplication(std::vector<std::complex<float>> a, std::vector<std::complex<float>> b, std::vector<std::complex<float>>& c, int N) {
+    // A is wide 1 and tall N
+    // B is wide N and tall N
+    // therefore
+    // C is wide N and tall N
+    c.resize(N * N);
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            c[XYtoI(i, j, N)] = b[XYtoI(i, j, N)] * a[i];
+        }
+    }
+}
+
+AudioImageMagic::AudioImageMagic(int N)
+    : N(N), hann(N, juce::dsp::WindowingFunction<float>::WindowingMethod::hann), forwardFFT(N)
 {
     audioFft.resize(N);
     timeDomain2D.resize(N * N);
     convoFft.resize(N * N);
+    imageFft.resize(N * N);
 }
 
 void AudioImageMagic::initialize(float samplerate, int fftSize)
@@ -66,8 +82,7 @@ void AudioImageMagic::performFFT()
     }
 
     // 2. MULTIPLY FFT OF IMAGE AND AUDIO
-    // convoFft = multiply(imageFft, audioFft);
-    convoFft = *imageFft;
+    elementWiseMultiplication(audioFft, imageFft, convoFft, N);
 
     // 3. GO BACK TO TIME-DOMAIN
     timeDomain2D = fft2d(convoFft, dj::fft_dir::DIR_BWD); // time_domain = np.fft.ifft2(fft_convo).real
@@ -95,9 +110,12 @@ void AudioImageMagic::performFFT()
                                           fftData.size()); // result = result / np.max(np.abs(result))
 
 
-    min = min / maxAbs;
-    max = max / maxAbs;
-
+    if(!juce::approximatelyEqual(maxAbs,0.f))
+    {
+        min = min / maxAbs;
+        max = max / maxAbs;
+    }
+    
     juce::FloatVectorOperations::add(fftData.data(),
                                      -(min + (max - min) / 2),
                                      fftData.size()); // result = result - (min + (max - min) / 2)
