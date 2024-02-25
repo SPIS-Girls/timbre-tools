@@ -108,8 +108,7 @@ void SpisGirlsAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
         // throw big error
         // and quit everything
     }
-
-    //aaa
+    startTimerHz(5);
     audioImageMagic.initialize(sampleRate, N);
 }
 
@@ -185,13 +184,6 @@ void SpisGirlsAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
             audioImageMagic.processSample(audioIn[i], channelData, i, buffer.getNumSamples());
         }
     }
-
-    if (imageCaptureTrigger <= samplesProcessedCount) {
-        camera->takeStillPicture(procImage);
-        imageCaptureTrigger += samplerate;
-    }
-
-    samplesProcessedCount += buffer.getNumSamples();
 }
 
 //==============================================================================
@@ -226,3 +218,7 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
     return new SpisGirlsAudioProcessor();
 }
 
+void SpisGirlsAudioProcessor::timerCallback()
+{
+    camera->takeStillPicture(procImage);
+}
