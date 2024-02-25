@@ -47,6 +47,25 @@ void AudioImageMagic::processSample(float sample, float * writeBuffer, int pos, 
     }
 };
 
+#define XYtoI(x,y,X) (X*x+y)
+
+void matrixMultiplication(std::vector<std::complex<float>> a, std::vector<std::complex<float>> b, std::vector<std::complex<float>>& c, int M, int N, int L) {
+    // A is wide M and tall N
+    // B is wide L and tall M
+    // therefore
+    // C is wide L and tall N
+    c.resize(L * N);
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < L; j++) {
+            c[XYtoI(i, j, L)] = 0;
+            for (int m = 0; m < M; m++) {
+                c[XYtoI(i, j, L)] += a[XYtoI(i, m, M)] * b[XYtoI(m, j, L)];
+            }
+        }
+
+    }
+}
+
 void AudioImageMagic::performFFT()
 {
     forwardFFT.performRealOnlyForwardTransform(fftData.data());
@@ -57,7 +76,7 @@ void AudioImageMagic::performFFT()
 
     // 2. MULTIPLY FFT OF IMAGE AND AUDIO
     // fft_convo = image_fft * audio_expanded_fft # Perform convolution
-
+    // matrixMultiplication(image_fft, audio_expanded_fft, fft_convo, 256, 256, 1);
 
     // 3. GO BACK TO TIME-DOMAIN
     // time_domain = np.fft.ifft2(fft_convo).real
