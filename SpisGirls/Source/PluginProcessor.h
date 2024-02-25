@@ -57,7 +57,7 @@ public:
 
     // our stuff
     std::shared_ptr<juce::Image> ourImage;
-    juce::CameraDevice* camera;
+    std::unique_ptr<juce::CameraDevice> camera;
     std::vector<std::complex<float>> imageForFFT;
     std::vector<std::complex<float>> imageFftData;
     const int N = 256;

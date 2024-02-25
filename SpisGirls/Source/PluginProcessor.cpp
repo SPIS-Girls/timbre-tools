@@ -101,7 +101,8 @@ void SpisGirlsAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
 
     if (cameraList.size() > 0) {
         std::cout << cameraList.strings.getFirst();
-        camera = juce::CameraDevice::openDevice(0);
+        camera = std::unique_ptr<juce::CameraDevice>(juce::CameraDevice::openDevice(0));
+
     }
     else {
         // throw big error
@@ -153,7 +154,7 @@ void SpisGirlsAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     for (int i = 0; i < midiList.size(); i++)
     {
         auto message = midiList[i];
-        auto timestamp = message.getTimeStamp();
+        auto timestamp = midiList[0].getTimeStamp();
         auto sampleNumber =  (int) (timestamp * samplerate);
         midiBuffer.addEvent (message, sampleNumber);
     }
