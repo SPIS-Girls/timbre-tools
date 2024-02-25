@@ -107,8 +107,6 @@ void SpisGirlsAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
         // and quit everything
     }
 
-    camera->takeStillPicture(procImage);
-
     //aaa
     audioImageMagic.initialize(sampleRate, N);
 }
@@ -150,13 +148,15 @@ void SpisGirlsAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
-    int channel = 1; // MIDI channel 1
-    int controllerNumber = 7;
-    int controllerValue = 64;
-    auto message = juce::MidiMessage::controllerEvent(channel, controllerNumber, controllerValue);
-    auto timestamp = message.getTimeStamp();
-    auto sampleNumber =  (int) (timestamp * samplerate);
-    midiBuffer.addEvent (message, sampleNumber);
+    
+    for (int i = 0; i < midiList.size(); i++)
+    {
+        auto message = midiList[i];
+        auto timestamp = message.getTimeStamp();
+        auto sampleNumber =  (int) (timestamp * samplerate);
+        midiBuffer.addEvent (message, sampleNumber);
+    }
+
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -183,6 +183,13 @@ void SpisGirlsAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
             audioImageMagic.processSample(audioIn[i], channelData, i, buffer.getNumSamples());
         }
     }
+
+    if (imageCaptureTrigger <= samplesProcessedCount) {
+        camera->takeStillPicture(procImage);
+        imageCaptureTrigger += samplerate;
+    }
+
+    samplesProcessedCount += buffer.getNumSamples();
 }
 
 //==============================================================================
@@ -216,3 +223,4 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new SpisGirlsAudioProcessor();
 }
+

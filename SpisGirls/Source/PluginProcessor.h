@@ -61,6 +61,8 @@ public:
     std::vector<std::complex<float>> imageForFFT;
     std::vector<std::complex<float>> imageFftData;
     const int N = 256;
+    uint32_t samplesProcessedCount = 0;
+    uint32_t imageCaptureTrigger = 0;
 
     std::function<void(const juce::Image&)> procImage = [this](const juce::Image& _image)
     {
@@ -166,8 +168,21 @@ public:
         avgSlinkiness /= pixelCount;
         avgCrunchiness /= (width-2)*(height-2);
         avgBrightness /= pixelCount;
-
         ourImage = std::make_shared<juce::Image>(_image);
+
+        auto message1 = juce::MidiMessage::noteOn(1, 1, avgBleededRedness);
+        auto message2 = juce::MidiMessage::noteOn(1, 2, avgBleededGreeness);
+        auto message3 = juce::MidiMessage::noteOn(1, 3, avgBleededBlueness);
+        auto message4 = juce::MidiMessage::noteOn(1, 4, avgSlinkiness);
+        auto message5 = juce::MidiMessage::noteOn(1, 5, avgCrunchiness);
+        auto message6 = juce::MidiMessage::noteOn(1, 6, avgBrightness);
+        midiList.clearQuick();
+        midiList.add(message1);
+        midiList.add(message2);
+        midiList.add(message3);
+        midiList.add(message4);
+        midiList.add(message5);
+        midiList.add(message6);
 
         // Preoare structure for FFT2
         imageForFFT.resize(N* N);
@@ -187,7 +202,8 @@ public:
 private:
     AudioImageMagic audioImageMagic{N};
     double samplerate;
-
+    void addMessageToList (const juce::MidiMessage& message);
+    juce::Array<juce::MidiMessage> midiList;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SpisGirlsAudioProcessor)
 };

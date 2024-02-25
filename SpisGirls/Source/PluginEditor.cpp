@@ -16,10 +16,12 @@ SpisGirlsAudioProcessorEditor::SpisGirlsAudioProcessorEditor (SpisGirlsAudioProc
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
+    startTimerHz(10);
 }
 
 SpisGirlsAudioProcessorEditor::~SpisGirlsAudioProcessorEditor()
 {
+    stopTimer();
 }
 
 //==============================================================================
@@ -30,7 +32,9 @@ void SpisGirlsAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
-    g.drawFittedText ("Hello Glorld!", getLocalBounds(), juce::Justification::centred, 1);
+    g.drawFittedText("Hello Glorld!", getLocalBounds(), juce::Justification::centred, 1);
+    //g.drawFittedText(juce::String(audioProcessor.imageCaptureTrigger), getLocalBounds(), juce::Justification::centredLeft, 1);
+    if(audioProcessor.ourImage) g.drawImageAt(*audioProcessor.ourImage, 0, 0);
 }
 
 void SpisGirlsAudioProcessorEditor::resized()

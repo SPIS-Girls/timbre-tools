@@ -14,7 +14,7 @@
 //==============================================================================
 /**
 */
-class SpisGirlsAudioProcessorEditor  : public juce::AudioProcessorEditor
+class SpisGirlsAudioProcessorEditor  : public juce::AudioProcessorEditor, private juce::Timer
 {
 public:
     SpisGirlsAudioProcessorEditor (SpisGirlsAudioProcessor&);
@@ -30,4 +30,8 @@ private:
     SpisGirlsAudioProcessor& audioProcessor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SpisGirlsAudioProcessorEditor)
+
+    void timerCallback() final {
+        repaint();
+    }
 };
