@@ -200,7 +200,7 @@ public:
     };
 
 private:
-    AudioImageMagic audioImageMagic{N};
+    AudioImageMagic audioImageMagic{N, &imageFftData};
     double samplerate;
     void addMessageToList (const juce::MidiMessage& message);
     juce::Array<juce::MidiMessage> midiList;

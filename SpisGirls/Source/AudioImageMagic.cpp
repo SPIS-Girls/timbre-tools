@@ -10,8 +10,12 @@
 
 #include "AudioImageMagic.h"
 
-AudioImageMagic::AudioImageMagic(int N) : N(N), hann(N, juce::dsp::WindowingFunction<float>::WindowingMethod::hann), forwardFFT(N)
+AudioImageMagic::AudioImageMagic(int N, std::vector<std::complex<float>>* imageFft)
+    : N(N), hann(N, juce::dsp::WindowingFunction<float>::WindowingMethod::hann), forwardFFT(N), imageFft(imageFft)
 {
+    audioFft.resize(N);
+    timeDomain2D.resize(N * N);
+    convoFft.resize(N * N);
 }
 
 void AudioImageMagic::initialize(float samplerate, int fftSize)
@@ -21,7 +25,7 @@ void AudioImageMagic::initialize(float samplerate, int fftSize)
     fftData.clear();
     window.clear();
     // Filling fftData with 0s, because usage of std::copy later, not sure if needed though
-    for(int i = 0; i < this->fftSize; ++i)
+    for (int i = 0; i < this->fftSize; ++i)
     {
         fftData.add(0);
     }
@@ -29,18 +33,19 @@ void AudioImageMagic::initialize(float samplerate, int fftSize)
     forwardFFT = juce::dsp::FFT(log2(fftSize));
 };
 
-void AudioImageMagic::processSample(float sample, float * writeBuffer, int pos, int numSamples)
+void AudioImageMagic::processSample(float sample, float* writeBuffer, int pos, int numSamples)
 {
     window.set(windowIdx, sample);
     windowIdx++;
     if (windowIdx == windowSize)
     {
-        std::fill (fftData.begin(), fftData.end(), 0.0f);
-        std::copy (window.begin(), window.end(), fftData.begin());
+        std::fill(fftData.begin(), fftData.end(), 0.0f);
+        std::copy(window.begin(), window.end(), fftData.begin());
         hann.multiplyWithWindowingTable(fftData.begin(), windowSize);
         windowIdx = 0;
         performFFT();
-        for (int i = 0; i < windowSize; ++i) {
+        for (int i = 0; i < windowSize; ++i)
+        {
             writeBuffer[pos] = fftData[i];
             pos = (pos + 1) % numSamples; // Wrap pos to start if it reaches the end of the buffer
         }
@@ -51,30 +56,53 @@ void AudioImageMagic::performFFT()
 {
     forwardFFT.performRealOnlyForwardTransform(fftData.data());
 
-    // 1. MAKE COLUMN VECTOR OUT OF AUDIO FFT
-    // audio_fft = np.fft.fft2(audio_expanded)
-    // audio_expanded_fft = np.expand_dims(audio_fft, axis=1)
+    // 1. MAKE VECTOR OUT OF AUDIO FFT
+    for (int i = 0; i < windowSize; i++)
+    {
+        const auto real = fftData[i * 2];
+        const auto img = fftData[i * 2 + 1];
+        audioFft[i].real(real);
+        audioFft[i].imag(img);
+    }
 
     // 2. MULTIPLY FFT OF IMAGE AND AUDIO
-    // fft_convo = image_fft * audio_expanded_fft # Perform convolution
-
+    // convoFft = multiply(imageFft, audioFft);
+    convoFft = *imageFft;
 
     // 3. GO BACK TO TIME-DOMAIN
-    // time_domain = np.fft.ifft2(fft_convo).real
+    timeDomain2D = fft2d(convoFft, dj::fft_dir::DIR_BWD); // time_domain = np.fft.ifft2(fft_convo).real
 
     // 4. SUM ACROSS COLUMNS
-    // result = np.sum(time_domain, axis = 1)
+    std::fill(fftData.begin(), fftData.end(), 0.0f);
+    auto* data = fftData.data();
+    for (auto i = 0; i < N; i++)
+    {
+        for (auto j = 0; j < N; j++)
+        {
+            data[i] += timeDomain2D[i * N + j].real(); // result = np.sum(time_domain, axis = 1)
+        }
+    }
 
     // 5. NORMALIZE
-    // result = result / np.max(np.abs(result))
-    // min = np.min(result)
-    // max = np.max(result)
-    // result = result - (min + (max - min) / 2)
+    const auto range = juce::FloatVectorOperations::findMinAndMax(fftData.data(), fftData.size());
+    auto min = range.getStart(); // min = np.min(result)
+    auto max = range.getEnd(); // max = np.max(result)
+    const auto maxAbs = std::max(abs(min), abs(max));
+
+    juce::FloatVectorOperations::multiply(fftData.data(),
+                                          fftData.data(),
+                                          1 / maxAbs,
+                                          fftData.size()); // result = result / np.max(np.abs(result))
+
+
+    min = min / maxAbs;
+    max = max / maxAbs;
+
+    juce::FloatVectorOperations::add(fftData.data(),
+                                     -(min + (max - min) / 2),
+                                     fftData.size()); // result = result - (min + (max - min) / 2)
+
 
     // 6. MULTIPLY WITH HANNING WINDOW
-    // result = result * np.hanning(result.shape[0])
-
-
-    // ===== probably we do not need that =====
-    // forwardFFT.performRealOnlyInverseTransform(fftData.data());
+    hann.multiplyWithWindowingTable(fftData.begin(), windowSize); // result = result * np.hanning(result.shape[0])
 }
