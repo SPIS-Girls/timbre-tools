@@ -56,7 +56,7 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     // our stuff
-    const int N = 256;
+    const int N = 64;
 
     std::shared_ptr<juce::Image> ourImage;
     std::unique_ptr<juce::CameraDevice> camera;

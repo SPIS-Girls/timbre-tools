@@ -12,14 +12,18 @@
 
 #define XYtoI(x,y,X) (X*x+y)
 
-void elementWiseMultiplication(std::vector<std::complex<float>> a, std::vector<std::complex<float>> b, std::vector<std::complex<float>>& c, int N) {
+void elementWiseMultiplication(const std::vector<std::complex<float>>& a, const std::vector<std::complex<float>>& b,
+                               std::vector<std::complex<float>>& c, int N)
+{
     // A is wide 1 and tall N
     // B is wide N and tall N
     // therefore
     // C is wide N and tall N
-    c.resize(N * N);
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
+    // c.resize(N * N);
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
             c[XYtoI(i, j, N)] = b[XYtoI(i, j, N)] * a[i];
         }
     }
@@ -110,12 +114,12 @@ void AudioImageMagic::performFFT()
                                           fftData.size()); // result = result / np.max(np.abs(result))
 
 
-    if(!juce::approximatelyEqual(maxAbs,0.f))
+    if (!juce::approximatelyEqual(maxAbs, 0.f))
     {
         min = min / maxAbs;
         max = max / maxAbs;
     }
-    
+
     juce::FloatVectorOperations::add(fftData.data(),
                                      -(min + (max - min) / 2),
                                      fftData.size()); // result = result - (min + (max - min) / 2)
