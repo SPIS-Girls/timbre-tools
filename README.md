@@ -1,4 +1,4 @@
-# timbre-tools
+# Timbre Toys
 ### Timbre Tools Hackathon 2024
 
 This repository contains source code and assets of the project made by **SPIS Girls** for Timbre Tools 2024 Hackathon.
