@@ -22,6 +22,7 @@ SpisGirlsAudioProcessor::SpisGirlsAudioProcessor()
                        )
 #endif
 {
+
 }
 
 SpisGirlsAudioProcessor::~SpisGirlsAudioProcessor()

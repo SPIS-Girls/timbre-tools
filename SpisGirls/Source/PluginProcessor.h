@@ -56,11 +56,12 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     // our stuff
+    const int N = 64;
+
     std::shared_ptr<juce::Image> ourImage;
     std::unique_ptr<juce::CameraDevice> camera;
     std::vector<std::complex<float>> imageForFFT;
-    std::vector<std::complex<float>> imageFftData;
-    const int N = 256;
+    AudioImageMagic audioImageMagic{ N };
 
     std::function<void(const juce::Image&)> procImage = [this](const juce::Image& _image)
     {
@@ -194,14 +195,13 @@ public:
         }
 
         // Run FFT2
-        imageFftData = dj::fft2d(imageForFFT, dj::fft_dir::DIR_FWD);
+        audioImageMagic.imageFft = dj::fft2d(imageForFFT, dj::fft_dir::DIR_FWD);
 
     };
     
     void timerCallback() override;
     
 private:
-    AudioImageMagic audioImageMagic{N};
     double samplerate;
     void addMessageToList (const juce::MidiMessage& message);
     juce::Array<juce::MidiMessage> midiList;

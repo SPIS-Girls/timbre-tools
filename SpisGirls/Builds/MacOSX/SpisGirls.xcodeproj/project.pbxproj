@@ -381,7 +381,7 @@
 		1EB20BAA7D2098699A611A64 /* FFT */ = {
 			isa = PBXGroup;
 			children = (
-				2F9B2D656DDF7FD564B7BD40 /* dj_fft.h */,
+				2F9B2D656DDF7FD564B7BD40,
 			);
 			name = FFT;
 			sourceTree = "<group>";
@@ -447,13 +447,13 @@
 		AD1A588E1E1493F194DC94C3 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				1EB20BAA7D2098699A611A64 /* FFT */,
-				FA7DD4B039D89B5F50992C5F /* AudioImageMagic.cpp */,
-				00C9FB2217CAEBA96D3887E9 /* AudioImageMagic.h */,
-				1E8E39DBFA1643D788F9A66D /* PluginProcessor.cpp */,
-				5DF6695EC4360C7647C625F9 /* PluginProcessor.h */,
-				385FF11F3AE2162E52839C04 /* PluginEditor.cpp */,
-				944D5C8408B27AFE889EB698 /* PluginEditor.h */,
+				1EB20BAA7D2098699A611A64,
+				FA7DD4B039D89B5F50992C5F,
+				00C9FB2217CAEBA96D3887E9,
+				1E8E39DBFA1643D788F9A66D,
+				5DF6695EC4360C7647C625F9,
+				385FF11F3AE2162E52839C04,
+				944D5C8408B27AFE889EB698,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -856,25 +856,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06CD652A38224888147B09F7 /* AudioImageMagic.cpp in Sources */,
-				FB055F68A7112842E7342A65 /* PluginProcessor.cpp in Sources */,
-				FA37F6EAAA5A76B675F20B00 /* PluginEditor.cpp in Sources */,
-				C9C77F32CD91C8ADD3ABD860 /* include_juce_audio_basics.mm in Sources */,
-				60E707C5C7045E8E05A9FCD4 /* include_juce_audio_devices.mm in Sources */,
-				70B829F70B8C806FA5F92664 /* include_juce_audio_formats.mm in Sources */,
-				0B1652F5422A7122592CB2BE /* include_juce_audio_plugin_client_ARA.cpp in Sources */,
-				6B7B5C5E5FB3741CF4A38BFB /* include_juce_audio_processors.mm in Sources */,
-				12535BF15A5A19848B8868B5 /* include_juce_audio_processors_ara.cpp in Sources */,
-				41995E048E3C13513CE93776 /* include_juce_audio_processors_lv2_libs.cpp in Sources */,
-				121EAF436D75F60D792F4305 /* include_juce_audio_utils.mm in Sources */,
-				4638D70FBB741458FBA08AC5 /* include_juce_core.mm in Sources */,
-				1C5242E920DC5FC3448293B7 /* include_juce_data_structures.mm in Sources */,
-				046A55BA0CDE99FA9DD71D92 /* include_juce_dsp.mm in Sources */,
-				65FBC1A8532F192F1B14CEE7 /* include_juce_events.mm in Sources */,
-				2403E10ED18017AFE851EC22 /* include_juce_graphics.mm in Sources */,
-				D00EA8A7AFCD7B841D94171C /* include_juce_gui_basics.mm in Sources */,
-				A6C5CF0609A057315C224924 /* include_juce_gui_extra.mm in Sources */,
-				174C855638B35FA39D4E491E /* include_juce_video.mm in Sources */,
+				06CD652A38224888147B09F7,
+				FB055F68A7112842E7342A65,
+				FA37F6EAAA5A76B675F20B00,
+				C9C77F32CD91C8ADD3ABD860,
+				60E707C5C7045E8E05A9FCD4,
+				70B829F70B8C806FA5F92664,
+				0B1652F5422A7122592CB2BE,
+				6B7B5C5E5FB3741CF4A38BFB,
+				12535BF15A5A19848B8868B5,
+				41995E048E3C13513CE93776,
+				121EAF436D75F60D792F4305,
+				4638D70FBB741458FBA08AC5,
+				1C5242E920DC5FC3448293B7,
+				046A55BA0CDE99FA9DD71D92,
+				65FBC1A8532F192F1B14CEE7,
+				2403E10ED18017AFE851EC22,
+				D00EA8A7AFCD7B841D94171C,
+				A6C5CF0609A057315C224924,
+				174C855638B35FA39D4E491E,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
