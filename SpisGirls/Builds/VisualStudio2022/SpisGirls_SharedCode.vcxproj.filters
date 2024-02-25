@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="SpisGirls\Source\FFT">
+      <UniqueIdentifier>{4A762CF3-BFA8-F144-96BB-2B891E619207}</UniqueIdentifier>
+    </Filter>
     <Filter Include="SpisGirls\Source">
       <UniqueIdentifier>{8333AB91-094C-F6BA-F817-B2713A842BEA}</UniqueIdentifier>
     </Filter>
@@ -637,10 +640,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\ImageFfft.cpp">
-      <Filter>SpisGirls\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AudioFft.cpp">
+    <ClCompile Include="..\..\Source\AudioImageMagic.cpp">
       <Filter>SpisGirls\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
@@ -3240,10 +3240,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\ImageFfft.h">
-      <Filter>SpisGirls\Source</Filter>
+    <ClInclude Include="..\..\..\dj_fft\dj_fft.h">
+      <Filter>SpisGirls\Source\FFT</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\AudioFft.h">
+    <ClInclude Include="..\..\Source\AudioImageMagic.h">
       <Filter>SpisGirls\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginProcessor.h">
@@ -3251,9 +3251,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginEditor.h">
       <Filter>SpisGirls\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\dj_fft\dj_fft.h">
-      <Filter>SpisGirls</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\..\..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">
       <Filter>JUCE Modules\juce_audio_basics\audio_play_head</Filter>

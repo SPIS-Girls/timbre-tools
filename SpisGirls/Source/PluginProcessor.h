@@ -9,7 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "AudioFft.h"
+#include "AudioImageMagic.h"
+#include "../../dj_fft/dj_fft.h"
 
 //==============================================================================
 /**
@@ -58,7 +59,8 @@ public:
     std::shared_ptr<juce::Image> ourImage;
     juce::CameraDevice* camera;
     std::vector<std::complex<float>> imageForFFT;
-
+    std::vector<std::complex<float>> imageFftData;
+    const int N = 256;
 
     std::function<void(const juce::Image&)> procImage = [this](const juce::Image& _image)
     {
@@ -167,8 +169,8 @@ public:
 
         ourImage = std::make_shared<juce::Image>(_image);
 
-        float N = 256.f;
-        imageForFFT.resize((int)N* N);
+        // Preoare structure for FFT2
+        imageForFFT.resize(N* N);
         float di = (float)width / N;
         float dj = (float)height / N;
         for (int i = 0; i < N; i++) {
@@ -176,10 +178,14 @@ public:
                 imageForFFT[i * N + j] = myBitmap[di * (float)i][dj * (float)j].br;
             }
         }
+
+        // Run FFT2
+        imageFftData = dj::fft2d(imageForFFT, dj::fft_dir::DIR_FWD);
+
     };
 
 private:
-    AudioFft audioFft;
+    AudioImageMagic audioImageMagic{N};
     double samplerate;
 
     //==============================================================================
