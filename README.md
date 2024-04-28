@@ -18,7 +18,7 @@ Video feature extraction and FFT calculations are computed in a real-time JUCE p
 ## In-Depth Description
 
 ### Feature Extraction
-#todo description
+The JUCE plugin is responsible for every image-dependent feature extraction. It periodically caputres a still image from the first available webcam and process it. The images is copied and resized over more manageable and writable data structures. The features are programatically extracted. Some of them are individual color presence (bleeding amount) and slinkiness (expansion of the slinky). The image is then resized one more time and fed to another object, which will run a FFT on the image itself.
 ### MaxMSP
 #todo description
 ### JUCE -> MaxMSP Communication
