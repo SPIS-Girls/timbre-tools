@@ -19,17 +19,23 @@ Video feature extraction and FFT calculations are computed in a real-time JUCE p
 
 ### Feature Extraction
 The JUCE plugin is responsible for every image-dependent feature extraction. It periodically caputres a still image from the first available webcam and process it. The images is copied and resized over more manageable and writable data structures. The features are programatically extracted. Some of them are individual color presence (bleeding amount) and slinkiness (expansion of the slinky). The image is then resized one more time and fed to another object, which will run a FFT on the image itself.
-### MaxMSP
-#todo description
-### JUCE -> MaxMSP Communication
-To make the extracted image features available within Max msp, the JUCE plugin gets loaded into max. It then outputs MIDI messages representing the various extracted features, which are then mapped to timbral audio effects in max.
-### FFT Calculations
-A simple prototype of the algorithm can be found in [python_test](/python_test) directory.
 ##### Video Capture  
 Each incoming frame is first resized to size NxN (where N is a power of 2) and then its 2D FFT is calculated.
-##### Audio Processing
+### FFT Calculations
+A simple prototype of the algorithm can be found in [python_test](/python_test) directory.
+##### FFT Audio Processing
 In the audio processing loop, samples are grouped into blocks of size N. For each block its 1D FFT is calculated. Image FFT and audio FFT are then combined by running an element-wise multiplication. The resulting 2D signal is extracted by running 2D IFFT. To move from 2D to 1D, the sum of each column is calculated. The resulting 1D signal is then scaled to a range [-1;1] and multiplied by a Hann window of size N to minimize artifacts.  
+### JUCE -> MaxMSP Communication
+After extracting features from the video stream, JUCE passes audio and MIDI messages into Max using the Max object ~vst. Each of the extracted features are mapped to an audio effect parameter from Max's built-in audio effects.
+### MaxMSP
+The MIDI messages that are passed to Max are from the extracted video features: red content, green content, blue content, presence, crunchiness, and brightness. Due to time contraints in the hackathon, only red, blue, green, and presence were mapped to following audio effects.
 
+Red: Wet/dry mix of a rain drop synthesizer. This effect takes a given audio and makes it sound like falling drops. A wetter mix makes the audio sound more raindrop-like.
+Green: Offset of "Comber," a comb filter effect.
+Blue: Wet/dry mix of a chamber reverb effect.
+Presence: Transposition of a pitch shifter effect. More succinctly, the presence of the slinky bends the pitch. 
+
+All of the audio effects controlled by the incoming MIDI messages are multiplied with the original audio signal, creating a beautiful cocophony of music controlled by the webcam watching the slinky. 
 
 ## Meet The Team
 We are a team of 5 from Sound and Music Computing, Aalborg University:
