@@ -18,7 +18,12 @@ Video feature extraction and FFT calculations are computed in a real-time JUCE p
 ## In-Depth Description
 
 ### Feature Extraction
-The JUCE plugin is responsible for every image-dependent feature extraction. It periodically caputres a still image from the first available webcam and process it. The images is copied and resized over more manageable and writable data structures. The features are programatically extracted. Some of them are individual color presence (bleeding amount) and slinkiness (expansion of the slinky). The image is then resized one more time and fed to another object, which will run a FFT on the image itself.
+The JUCE plugin is responsible for every image-dependent feature extraction. It periodically caputres a still image from the first available webcam and process it. The images is copied and resized over more manageable and writable data structures. The features are
+- individual color presence (extracted by bleeding the fundamental colors)
+- presence (which in the code is called slinkiness)
+- crunchiness (sum of the brightness absolute differences of neighboring pixels)
+- brightness
+The greyscale image is then resized and fed to another object, which will run a FFT on the image itself.
 ##### Video Capture  
 Each incoming frame is first resized to size NxN (where N is a power of 2) and then its 2D FFT is calculated.
 ### FFT Calculations
