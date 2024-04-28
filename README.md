@@ -22,7 +22,7 @@ Video feature extraction and FFT calculations are computed in a real-time JUCE p
 ### MaxMSP
 #todo description
 ### JUCE -> MaxMSP Communication
-#todo description
+To make the extracted image features available within Max msp, the JUCE plugin gets loaded into max. It then outputs MIDI messages representing the various extracted features, which are then mapped to timbral audio effects in max.
 ### FFT Calculations
 A simple prototype of the algorithm can be found in [python_test](/python_test) directory.
 ##### Video Capture  
