@@ -3,6 +3,10 @@
 
 This repository contains source code and assets of the project made by **SPIS Girls** for Timbre Tools 2024 Hackathon.
 
+Link to the [repository](https://github.com/SPIS-Girls/timbre-tools).
+
+Link to the [video](https://www.youtube.com/watch?v=V_v8tUOVORY) presentation.
+
 ## What is the project about?
 ### Inspiration
 The project comes in the form of a Max Patch. It is a **timbre** manipulation tool that allows the users to interact with a timbre the same way they would interact with a physical object. The main inspiration behind the project was a sonic interaction and a live performance (_#sensingtimbre_, _#timbrecheck_, _#timbreforall_).
